@@ -22,6 +22,3 @@ def computeFinalGrades(grades):
         i+=1      
     
     return gradesFinal
-
-
-#print(computeFinalGrades(np.array([12,10,7,4,2,0,-3,11,8.5,5.5,3,1,-1.5])))
