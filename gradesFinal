@@ -1,0 +1,14 @@
+import numpy as np
+
+def computeFinalGrades(grades):
+    gradesFinal=0
+    lowestGrade=[-3]
+    for i in range(len(grades)):
+        if any(grades[:,i]) in lowestGrade:
+            gradesFinal[i]=-3
+        elif len(grades[:,i])==1:
+            gradesFinal[i]=grades[i]
+        elif len(grades[:,i])>1:
+            gradesFinal[i]=gradesRounded(np.average(grades[:,i]-min(grades[:,i])))   
+    return gradesFinal
+    
