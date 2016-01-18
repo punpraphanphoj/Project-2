@@ -5,9 +5,9 @@
 
 import numpy as np
 
-def computeFinalGrades(grades):
+def roundGrade(grades):
     
-    gradesFinal=[]
+    gradesRounded=[]
            
     #Setting the 7-step scale
     scale=np.array([12,10,7,4,2,0,-3])       
@@ -18,7 +18,10 @@ def computeFinalGrades(grades):
         
         #Find the index of the minimum value (absolute)
         index=np.argmin((np.abs(scale-grades[i])))
-        gradesFinal=np.append(gradesFinal,scale[index])
+        gradesRounded=np.append(gradesRounded,scale[index])
         i+=1      
     
-    return gradesFinal
+    return gradesRounded
+
+
+#print(roundGrade(np.array([12,10,7,4,2,0,-3,11,8.5,5.5,3,1,-1.5])))
