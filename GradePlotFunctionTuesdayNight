@@ -1,0 +1,129 @@
+# -*- coding: utf-8 -*-
+"""
+Spyder Editor
+
+B4 Grades plot function. Creates a bar plot of the number of students who 
+recieved the final grade and a plot of the total grades for each assignment.
+
+"""
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+import math
+# following for counting occurences. Idea found from http://stackoverflow.com
+#/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item-in-python
+#from collections import Counter
+
+
+
+def gradesPlot(grades):
+#from computeFinalGrades import computeFinalGrades
+#Data input
+
+     
+#    #Pt. 1 Barplot
+#    grades = np.array([2, -3, 4, 10, 12, 7, 0, 4, 10, 4, 2, 4, 7, 10, 4, 0,])
+#    
+#    # get numbers for histogram
+#    i = g3 = g0 = g2 = g4 = g7 = g10 = g12 = 0
+#    
+#    for i in range(np.size(grades)):
+#        if grades[i] == -3:
+#            g3 = g3 + 1
+#        elif grades[i] == 0:
+#            g0 = g0 + 1
+#        elif grades[i] == 2:
+#            g2 = g2 + 1
+#        elif grades[i] == 4:
+#            g4 = g4 + 1
+#        elif grades[i] == 7:
+#            g7 = g7 + 1
+#        elif grades[i] == 10:
+#            g10 = g10 + 1
+#        elif grades[i] == 12:
+#            g12 = g12 + 1
+#            
+#    f1 = np.array([g3, g0, g2, g4, g7, g10, g12])
+#    
+#    #Specs
+#    scaleindex = np.array([-3, 0, 2, 4, 7, 10, 12])
+#    #margin = 0.05
+#    #width = (1.-2.*margin/np.size(f1))                                        
+#    #xdata = scaleindex + margin + 
+#    width = 1.8
+#    
+#    #Plot
+#    fig = plt.figure(1)
+#    plt.bar(scaleindex, f1, width, align = "center")
+#    ax = fig.gca()
+#    ax.set_xticks(scaleindex)
+#    ax.set_xticklabels(['-3', '0', '2', '4', '7', '10', '12'])
+#    plt.title("Final Grades")
+#    plt.xlabel("7-step-scale")
+#    plt.ylabel("Occurency")
+#    plt.show()
+    
+    #Pt. 2 Grade pr. assignment plot
+    #selcted matrix from row 0 to N students and coloumn 3 to M xaxis
+    
+     
+    average=[]
+    grades=np.delete(grades,0,1)
+    grades=np.delete(grades,0,1)
+    grades = grades.astype(np.float)
+    rawgrades=grades
+    xaxis = np.arange(1,(grades.shape[1]-1))
+    yaxis = np.array([-3,0,2,4,7,10,12])    
+    
+    
+    i = j = 0
+    for i in range(grades.shape[0]):
+        for j in range(grades.shape[1]):
+            grades[i,j] += np.random.uniform(-0.1,0.1)
+            
+    
+
+    
+    #a=[]
+    #for i in range(grades.shape[0]):
+        #for j in range(grades.shape[1]):      
+            #a+=plt.plot(grades[i,j],j,'b*')
+            
+            
+            #xaxis[i] + np.random.uniform(-0.1,0.1), grades[j,i+2] + np.random.uniform(-0.1,0.1)
+    
+    scaleindex = np.array([-3, 0, 2, 4, 7, 10, 12])
+    scaleindex1 = np.arange(1,grades.shape[0])
+    
+    fig1 = plt.figure(2)
+    ax1 = fig1.gca()
+    ax1.set_yticks(scaleindex)
+    ax1.set_xticks(scaleindex1)
+    ax1.set_yticklabels(['-3', '0', '2', '4', '7', '10', '12'])
+    plt.title("Grades pr. Assignment")
+    plt.xlabel("Assignments")
+    plt.ylabel("Grade")        
+    plt.xlim([0.75,grades.shape[1]+0.25])
+    plt.ylim([-4,13])
+    plt.grid()
+    
+    
+    for i in range(grades.shape[1]):    
+        a=np.arange(1,grades.shape[1]+1,dtype=float)
+        a+=np.random.uniform(-0.1,0.1)
+        plt.plot(a,grades.T[:,i],"b*")
+    for b in range(grades.shape[1]):
+        average=np.append(average,sum(rawgrades.T[b,:])/rawgrades.shape[0])
+    plt.plot(np.array([1,2,3]),average,"-ro")
+         
+    plt.show()
+    
+print(gradesPlot(np.array([['s123456', 'Michael Andersen', 7, 7, 4], 
+                               ['s213789', 'Bettina Petersen', 12, 10, 10], 
+                               ['s123468', 'Thomas Nielsen', -3, 7, 2], 
+                               ['s123579', 'Marie Hansen', 10, 12, 12]])))
+   
+   
+   
+   
+   
