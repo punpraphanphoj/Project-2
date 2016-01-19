@@ -1,0 +1,28 @@
+import numpy as np
+
+def computeFinalGrades(grades):
+    gradesFinal=[]
+    moregrades=np.delete(grades,0,1)
+    moregrades=np.delete(moregrades,0,1)
+    moregrades=moregrades.astype(np.int)
+    for i in range(grades.shape[0]):
+        if -3 in moregrades[i,:]:
+            gradesFinal=np.append(gradesFinal, -3)
+        elif grades.shape[1]-2==1:
+            gradesFinal[i]=grades[i]
+        elif grades.shape[1]-2>1:
+            from roundGrade import roundGrade
+            x=np.min(moregrades[i,:])
+            y=moregrades.shape[1]-1
+            z=np.sum(moregrades[i,:])
+            gradesFinal=np.append(gradesFinal,roundGrade(np.array([(z-x)/y])))
+            
+    return gradesFinal
+   
+''' 
+print(computeFinalGrades(np.array([['s123456','Michael Andersen',7,7,4],
+['s123789','Bettina Petersen',12,10,10],
+['s123468','Thomas Nielse',-3,7,2],
+['s123579','Marie Hansen',10,12,12]
+])))
+'''
