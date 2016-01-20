@@ -1,15 +1,19 @@
 import numpy as np
- 
+#function calculate the Final grade based on grades from assignments and criteria stated in the project description
 def computeFinalGrades(grades):
     gradesFinal=[]
+    # Delete the first two columns of the matrix to have only grades of assignments
     moregrades=np.delete(grades,0,1)
     moregrades=np.delete(moregrades,0,1)
     moregrades=moregrades.astype(np.int)
     for i in range(grades.shape[0]):
+        # Condition - 1, if any of the grades of assignments is equal to -3, the final grade is also equal to -3
         if -3 in moregrades[i,:]:
             gradesFinal=np.append(gradesFinal, -3)
+        # Condition - 2 if there is only one grade, the value of final grade is equal to grade fomr assignment
         elif grades.shape[1]-2==1:
             gradesFinal[i]=grades[i]
+        # Condition - 3 if there is more than one assignment, the smallest grade is disregarded and the final grade is equal to average of remaining assignments
         elif grades.shape[1]-2>1:
             from roundGrade import roundGrade
             x=np.min(moregrades[i,:])
