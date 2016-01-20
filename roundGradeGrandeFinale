@@ -1,22 +1,25 @@
+#This function receives a vector which contains a set of numbers as the input (numbers between -3 and 12)
+#The output is a rounded number closest to the 7-step-scale grade. If the input number is exactly inbetween the steps,
+#the function will return the higher-step grade
+
 import numpy as np
 
 def roundGrade(grades):
     
     gradesRounded=[]
            
-    #Setting the 7-step scale
+    #Setting the 7-step scale for reference
     scale=np.array([12,10,7,4,2,0,-3])       
      
      
     #Rounding the grades one by one
     for i in range(np.size(grades)):
         
-        #Find the index of the minimum value (absolute)
+        #Find the index of the absolute minimum value 
         index=np.argmin(np.abs(scale-grades[i]))
+        
+        #Assign output vector to store result
         gradesRounded=np.append(gradesRounded,scale[index])
-        i+=1      
     
     return gradesRounded
     
-    
-#print(roundGrade(np.array([8.4])))
