@@ -1,0 +1,22 @@
+import numpy as np
+
+def roundGrade(grades):
+    
+    gradesRounded=[]
+           
+    #Setting the 7-step scale
+    scale=np.array([12,10,7,4,2,0,-3])       
+     
+     
+    #Rounding the grades one by one
+    for i in range(np.size(grades)):
+        
+        #Find the index of the minimum value (absolute)
+        index=np.argmin(np.abs(scale-grades[i]))
+        gradesRounded=np.append(gradesRounded,scale[index])
+        i+=1      
+    
+    return gradesRounded
+    
+    
+#print(roundGrade(np.array([8.4])))
