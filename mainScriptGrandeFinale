@@ -1,4 +1,7 @@
-#Project 2, Main script
+#This script is the main part, responsible for the user interface/menu, checking and deleting erroneous data, loading data (CSV only), 
+#and calling sub functions. The menu requires keyboard input from the user to specify the desired functions, and returns the appropriate
+#data. The input data is the data loaded from the CSV file, and the output is on screen, though there are data being transferred 
+#to and from subfunctions.
 
 import numpy as np
 import os
@@ -6,16 +9,17 @@ import pandas as pd
 
 
 def mainScript():
-    
 
     #Variable to store file name
-    filename=np.empty([0])   
+    filename=np.empty([0])  
     
+    #Initial menu, prompting user to load the data
     print('\f\n===========================================\n'
           'Welcome to program for grading students\n\n'
           'To continue, please type in the database file name.\n'
           'To exit, please press 5.\n'
           '\n===========================================')
+    #Check if the CSV file is in the directory, and if the user wishes to quit
     while True:
         try:
             filename=input('\nPlease input file name and csv extension [filename.csv]\n'
@@ -29,13 +33,10 @@ def mainScript():
     if filename=='5':
         raise SystemExit
         
-        
+    #Load data, modify, and store original data for further use    
     database=np.array(pd.read_csv(filename))
     rawdata=pd.read_csv(filename)
     rawdata=rawdata.columns
-    
-    print('The number of students is %d and the number of assignments is %d' %(database.shape[0], database.shape[1]-2))
-    
     
     #Main menu. Loop until user quits
     while True:
@@ -48,11 +49,9 @@ def mainScript():
                 '4-Display list of grades.\n'
                 '5-Exit.\n'
                 '\n==========================================')
-        #Check if data has been loaded
-        if database.size==0:
-            print('(The data has not been loaded)')
-        else:
-            print('(The data file "%s" has been loaded)'%filename)
+                
+        print('(The data file "%s" has been loaded)'%filename)
+        print('The number of students is %d and the number of assignments is %d' %(database.shape[0], database.shape[1]-2))
         
        #Check the validity of the input (must be in range)
         while True:
@@ -77,16 +76,18 @@ def mainScript():
                         break
                 except:
                     pass
+                    
+            #Overwrite new data
             database=np.array(pd.read_csv(filename))
             rawdata=pd.read_csv(filename)
             rawdata=rawdata.columns
-                
+            print('The number of students is %d and the number of assignments is %d' %(database.shape[0], database.shape[1]-2))
             input('"%s" loaded. \nPress any key to return to main menu:'%filename)
         
         
         #Option 2:Check for data errors
-        
         elif choice==2:
+        #Check if the student number contains duplicates
             h=0
             i=0
             j=0
@@ -107,6 +108,7 @@ def mainScript():
                 j=0
                 i+=1
             
+            #Check if the input grade is valid (values must be -3,0,2,4,7,10,or 12)
             i=0
             j=0
             while i<(database.shape[0]):
@@ -121,37 +123,36 @@ def mainScript():
                 i+=1
                 j=0
                 
+            #Display the number of rows deleted
             if delete!=0:
                 print("%d rows of erroneous data deleted"%delete)                
             else:
                 print("There is no erroneous data")
-                
             input('Press any key to return to main menu:') 
             
             
        #Option 3: Generate plots     
             
         elif choice==3:
-            #Check if file has been loaded
-            if database.size==0:
-                print('Please load the data first (select option 1)\n')  
-            else:
-                from gradesPlot import gradesPlot
-                gradesPlot(database)
-            
+        #Call plotting subfunction with the input as the current database
+            from gradesPlot import gradesPlot
+            gradesPlot(database)
             input('Press any key to return to main menu:')      
         
     
        #Option 4:Display list of grade
+       #Delete the first two columns that does not contain grades
         elif choice==4:
-            
             gradelist=database
             for i in range(1,3):
                 gradelist=np.delete((gradelist),0,1)
-            
+            #Call subfunction that computes final grade with the input as the current database. The output is an vector saved in 
+            #variable 'grade'
             from computeFinalGrades import computeFinalGrades
             grade=computeFinalGrades(database)
             
+            #If the user wishs to display the data without cleaning out erroneous data first, the program will give a warning
+            #and the final grade will not be computed (no value)
             i=0            
             j=0
             while i<(database.shape[0]):
@@ -163,31 +164,33 @@ def mainScript():
                 i+=1
                 j=0
             
-            #displaygrade=database[:,0]
-            #displaygrade=np.append(displaygrade,database[:,1])
-            
+            #Combine all the relevant values and strings together, and save it under the variable 'finalprint'
+            #The separator is a comma
             finalprint=str("Student ID,Student name,")
-
+            
             for i in range(database.shape[1]-2):
                 finalprint+=str("Assignment %d,"%(i+1))
             finalprint+=str("Final grade,")
             
-
             for i in range(database.shape[0]):
                 finalprint+=("%s,%s,"%(database[i,0],database[i,1]))
                 for j in range(database.shape[1]-2):
                     finalprint+=("%s,"%(gradelist[i,j]))
                 finalprint+=("%s,"%grade[i])
-            #df=pd.DataFrame(finalprint[1:,1:], index=np.arange(1,finalprint.shape[0]), columns = finalprint[0,1:])
+            
+            #Split and convert all data in finalprint into numpy array vector
             finalprint=finalprint.split(",")
             finalprint=np.array(finalprint)
+            #Delete last value (empty value due to remaining comma separator)
             finalprint=np.delete(finalprint,-1)
+            #Convert into proper M x N shape vector
             finalprint.shape=(database.shape[0]+1,database.shape[1]+1)
 
             for i in range(finalprint.shape[1]):
                 print("{:=<18}".format(''),end="")
             print("")
-               
+              
+            #Display value (one by one)  
             j=0    
             while j <(finalprint.shape[0]):
                 print("||",end="")
@@ -208,5 +211,4 @@ def mainScript():
         else:
             raise SystemExit
            
-                 
 mainScript()
