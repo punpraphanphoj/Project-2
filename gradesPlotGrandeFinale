@@ -1,26 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
+# Function shows two plots: first one is a bar plot that shows how many occurences of each final grades was there
+    Second plot shows the data points presenting grades for each of the assignments together with average value for assignment.
+    The data points are scattered for transarency.
 
-B4 Grades plot function. Creates a bar plot of the number of students who 
-recieved the final grade and a plot of the total grades for each assignment.
-
-"""
 import matplotlib.pyplot as plt
 import numpy as np
-# following for counting occurences. Idea found from http://stackoverflow.com
-#/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item-in-python
-#from collections import Counter
-
 
 def gradesPlot(grades):
     #from computeFinalGrades import computeFinalGrades
     #Data input
-    
      
-    #Pt. 1 Barplot
+    #Plot. 1 Barplot
     from computeFinalGrades import computeFinalGrades 
     Fgrades = computeFinalGrades(grades)
+    
+    #Data is converted into array in range between 1 and 7 to enable even speces between data labels on x-axis.
     
     for i in range(np.size(Fgrades)):
         if Fgrades[i]==-3:
@@ -38,7 +31,9 @@ def gradesPlot(grades):
         elif Fgrades[i]==12:
             Fgrades[i]=7
     
+    
     fig = plt.figure(1)
+    # Histogram is used to calculated the number of occurences of each final grade
     his=np.histogram(Fgrades, bins=(7),range=(1,8))
     plt.bar(his[1][1:],his[0],width=0.8, align="center")
     ax=fig.gca()
@@ -50,8 +45,8 @@ def gradesPlot(grades):
     plt.grid()
     plt.show()
     
-     #Pt. 2 Grade pr. assignment plot
-    #selcted matrix from row 0 to N students and coloumn 3 to M xaxis
+     #Pt. 2 Grade per assignment plot
+  
     
     average=[]
     name=grades[:,1]
@@ -59,12 +54,12 @@ def gradesPlot(grades):
     grades=np.delete(grades,0,1)
     grades = grades.astype(np.float)
     rawgrades=grades
-    
+    # Here very small random number is added to scatter the data points around given point to provide transparency of results
     i = j = 0
     for i in range(grades.shape[0]):
         for j in range(grades.shape[1]):
             grades[i,j] += np.random.uniform(-0.1,0.1)
-  
+    # With increasing number of assignments, the number of data points plotted is increasing
     #a=[]
     #for i in range(grades.shape[0]):
         #for j in range(grades.shape[1]):      
@@ -80,6 +75,7 @@ def gradesPlot(grades):
     ax.set_yticks(scaleindex)
     ax.set_xticks(scaleindex1)
     ax.set_yticklabels(['-3', '0', '2', '4', '7', '10', '12'])
+    # X-axis is generic and its length is dependent on number of assignments
     ax.set_xticklabels(np.arange(1, grades.shape[0]+1))
     plt.title("Grades pr. Assignment")
     plt.xlabel("Number of assignment")
@@ -97,13 +93,8 @@ def gradesPlot(grades):
         average=np.append(average,sum(rawgrades.T[b,:])/rawgrades.shape[0])
     print(rawgrades.shape[0])
     plt.plot(np.arange(1, grades.shape[1]+1),average,"-ro", label='Average Grade')
+    #Legend has been moved out of the plot area to provide transparency of results
     ax.legend(loc='center left', bbox_to_anchor=(1,0.5),numpoints=1)
          
     plt.show()
     
-''' 
-print(gradesPlot(np.array([['s123456', 'Michael Andersen', 7, 7, 4,10], 
-                              ['s213789', 'Bettina Petersen', 12, 10, 10,4], 
-                               ['s123468', 'Thomas Nielsen', -3, 7, 2,0], 
-                              ['s123579', 'Marie Hansen', 10, 12, 12,-3],
-                              ['s141511', 'Adam Marczynski', 0, 0, 2,-3]])))'''
