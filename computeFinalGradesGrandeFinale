@@ -22,10 +22,3 @@ def computeFinalGrades(grades):
             gradesFinal=np.append(gradesFinal,roundGrade(np.array([(z-x)/y])))
             
     return gradesFinal
-   
-'''
-print(computeFinalGrades(np.array([['s123456','Michael Andersen',7,7,4,10],
-['s123789','Bettina Petersen',12,10,10,12],
-['s123468','Thomas Nielse',-3,7,2,0],
-['s123579','Marie Hansen',10,12,12,7]
-])))'''
